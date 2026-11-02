@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "status": "PROVISIONAL screening rules. General reference ranges for Nile tilapia culture, not validated for any specific tank, system, life stage or fish population, and not a trained or validated predictive model. Review with an aquaculture specialist before relying on them.",
+  "base_config": "water_quality_config.json",
+  "confirm_window_hours": 24,
+  "units": {
+    "temperature": {"C": null, "F": null},
+    "pH": {"pH": 1},
+    "dissolvedOxygen": {"mg/L": 1, "ppm": 1},
+    "turbidity": {"NTU": 1},
+    "ammonia": {"mg/L-N": 1, "mg/L-NH3": 0.8224, "mg/L-NH4": 0.7765, "umol/L": 0.014007},
+    "nitrite": {"mg/L-N": 1, "mg/L-NO2": 0.3045, "umol/L": 0.014007},
+    "nitrate": {"mg/L-N": 1, "mg/L-NO3": 0.2259, "umol/L": 0.014007},
+    "salinity": {"ppt": 1, "psu": 1, "g/L": 1}
+  },
+  "canonical_units": {"temperature": "°C", "pH": "", "dissolvedOxygen": "mg/L", "turbidity": "NTU", "ammonia": "mg/L as N (total ammonia nitrogen)", "nitrite": "mg/L as N", "nitrate": "mg/L as N", "salinity": "ppt"},
+  "plausible": {
+    "temperature": [-2, 50], "pH": [0, 14], "dissolvedOxygen": [0, 25], "turbidity": [0, 4000],
+    "ammonia": [0, 1000], "nitrite": [0, 1000], "nitrate": [0, 10000], "salinity": [0, 80]
+  },
+  "stale_after_hours": {"temperature": 24, "pH": 24, "dissolvedOxygen": 24, "turbidity": 72, "ammonia": 72, "nitrite": 72, "nitrate": 168, "salinity": 168},
+  "core_parameters": ["temperature", "pH", "dissolvedOxygen"],
+  "options": {
+    "species": ["tilapia", "other"],
+    "lifeStage": ["fry", "fingerling", "juvenile", "adult", "broodstock", "unknown"],
+    "system": ["ras", "pond", "flow_through", "cage", "biofloc", "other"],
+    "source": ["manual", "sensor", "imported_historical"],
+    "ammoniaMethod": ["test_kit_colorimetric", "photometer", "ion_selective_electrode", "laboratory", "other"]
+  },
+  "profiles": {
+    "tilapia": {
+      "label": "Nile tilapia (general reference)",
+      "lifeStageNote": "Fry and fingerlings are generally more sensitive; thresholds here are not adjusted by life stage.",
+      "parameters": {
+        "temperature": {
+          "label": "Temperature", "unit": "°C", "group": "thermal",
+          "normal": {"from_config": "temperature_C"},
+          "bands": {"high_concern": {"below": 20, "above": 35}, "critical_concern": {"below": 15, "above": 38}},
+          "check": ["Re-measure with a calibrated thermometer at several points and depths.", "Check heaters, chillers, shading and inflow temperature."],
+          "actions": {
+            "warning": ["Watch the trend and re-measure at the next routine check."],
+            "high_concern": ["Investigate the heat or cooling source now and monitor fish behaviour closely."],
+            "critical_concern": ["Treat as urgent: confirm the reading immediately and correct the temperature gradually (avoid abrupt changes)."]
+          }
+        },
+        "pH": {
+          "label": "pH", "unit": "", "group": "acid_base",
+          "normal": {"from_config": "pH"},
+          "bands": {"high_concern": {"below": 6.0, "above": 9.0}, "critical_concern": {"below": 5.0, "above": 10.0}},
+          "check": ["Re-measure with a freshly calibrated pH meter (check buffers).", "Check alkalinity, algae activity (daily pH swings) and source water."],
+          "actions": {
+            "warning": ["Re-measure and track the trend; look for the cause before adjusting."],
+            "high_concern": ["Identify the cause and plan a gradual correction; avoid sudden pH changes."],
+            "critical_concern": ["Treat as urgent: confirm the reading and seek specialist advice before any correction."]
+          }
+        },
+        "dissolvedOxygen": {
+          "label": "Dissolved oxygen", "unit": "mg/L", "group": "oxygen",
+          "normal": {"from_config": "DO_mgL"},
+          "bands": {"high_concern": {"below": 3.0}, "critical_concern": {"below": 2.0}},
+          "check": ["Re-measure with a calibrated DO meter, ideally at several locations and near dawn.", "Verify that aeration and circulation are running and unobstructed."],
+          "actions": {
+            "warning": ["Verify aeration and consider reducing feeding until oxygen is confirmed adequate."],
+            "high_concern": ["Increase aeration or circulation now and re-measure within the hour."],
+            "critical_concern": ["Treat as urgent: restore oxygen immediately and watch the fish; confirm the reading with a second instrument."]
+          }
+        },
+        "turbidity": {
+          "label": "Turbidity", "unit": "NTU", "group": "water_clarity",
+          "normal": {"from_config": "turbidity_NTU"},
+          "bands": {"high_concern": {"above": 50}, "critical_concern": {"above": 100}},
+          "check": ["Re-measure (median of 3 readings is preferable) and inspect the water visually.", "Check filtration, solids removal and feeding rate."],
+          "actions": {
+            "warning": ["Check filtration and solids removal at the next routine check."],
+            "high_concern": ["Inspect filters and feeding; high turbidity also degrades video analysis."],
+            "critical_concern": ["Investigate the source of suspended solids promptly."]
+          }
+        },
+        "unionizedAmmonia": {
+          "label": "Un-ionized ammonia (calculated)", "unit": "mg/L as NH3-N", "group": "nitrogen_cycle",
+          "derived": "Calculated from total ammonia, pH and temperature of the SAME reading (Emerson et al. 1975 equilibrium).",
+          "normal": {"max": 0.05},
+          "bands": {"high_concern": {"above": 0.2}, "critical_concern": {"above": 0.6}},
+          "check": ["Re-test total ammonia (note the method) together with pH and temperature.", "Check biofilter function, feeding rate and stocking density."],
+          "actions": {
+            "warning": ["Re-test and review feeding and biofilter performance."],
+            "high_concern": ["Reduce feeding and check the biofilter; re-test within hours."],
+            "critical_concern": ["Treat as urgent: confirm with a second test and seek specialist advice on water exchange; do not dose chemicals on a single reading."]
+          }
+        },
+        "nitrite": {
+          "label": "Nitrite", "unit": "mg/L as N", "group": "nitrogen_cycle",
+          "normal": {"max": 0.25},
+          "bands": {"high_concern": {"above": 1.0}, "critical_concern": {"above": 5.0}},
+          "check": ["Re-test and note the method and units.", "Check biofilter maturity and recent changes (new stock, medication, filter cleaning)."],
+          "actions": {
+            "warning": ["Re-test and review biofilter performance."],
+            "high_concern": ["Reduce feeding and check the biofilter; re-test within hours."],
+            "critical_concern": ["Treat as urgent: confirm the result and seek specialist advice."]
+          }
+        },
+        "nitrate": {
+          "label": "Nitrate", "unit": "mg/L as N", "group": "nitrogen_cycle",
+          "normal": {"max": 100},
+          "bands": {"high_concern": {"above": 300}, "critical_concern": {"above": 500}},
+          "check": ["Re-test; nitrate accumulates slowly and is usually managed by water exchange or plants."],
+          "actions": {
+            "warning": ["Plan routine water exchange or review nitrate removal."],
+            "high_concern": ["Review the water-exchange schedule."],
+            "critical_concern": ["Investigate promptly with specialist input."]
+          }
+        },
+        "salinity": {
+          "label": "Salinity", "unit": "ppt", "group": "salinity",
+          "normal": {"max": 15},
+          "bands": {"high_concern": {"above": 25}, "critical_concern": {"above": 35}},
+          "check": ["Re-measure with a calibrated refractometer or conductivity meter.", "Check the water source and evaporation."],
+          "actions": {
+            "warning": ["Confirm the salinity is intended for this culture."],
+            "high_concern": ["Investigate the source and avoid abrupt changes."],
+            "critical_concern": ["Treat as urgent: confirm the reading and seek specialist advice."]
+          }
+        }
+      },
+      "system_overrides": {
+        "biofloc": {"turbidity": null},
+        "pond": {"turbidity": {"normal": {"max": 50}, "bands": {"high_concern": {"above": 100}, "critical_concern": {"above": 200}}}}
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+# Secrets — never commit real API keys.
+.env
+.env.local
+**/.env.local
+frontend/.env.local
+backend/data/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/
+
+# Node
+node_modules/
+frontend/dist/
+
+# Local agent tooling
+.opencode/
+.agents/
+.kilo/
+
+# Live capture frames build the offline eval set; not source code.
+dataset/
+runs/
+weights/
+eval_ab/
+behavior_review_frames/
+track_review_frames/
+backups_dashboard_fix/
+backups_school_movement/
+test_videos/
+
+# Large binaries / model weights / datasets / generated artifacts
+*.pt
+*.pth
+*.onnx
+*.joblib
+*.zip
+*.part
+*.log
+*.out
+*.err
+~$*
+

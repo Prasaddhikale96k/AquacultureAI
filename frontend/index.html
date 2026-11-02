@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#F8FAFC" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%2319c8f2%27/%3E%3C/svg%3E" />
+    <title>AquacultureAI</title>
+    <script>
+      // Paint the persisted theme before React mounts (no flash of the wrong theme).
+      (function () {
+        try {
+          var saved = localStorage.getItem("aqua:theme");
+          if (saved === "dark" || saved === "light") {
+            document.documentElement.setAttribute("data-theme", saved);
+          } else {
+            document.documentElement.setAttribute("data-theme", "light");
+          }
+        } catch (e) { /* storage unavailable: keep the light default */ }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+# Local configuration with credentials (VITE_* values are bundled into the browser build)
+.env
+.env.local
+.env.*.local
+
+node_modules
+dist

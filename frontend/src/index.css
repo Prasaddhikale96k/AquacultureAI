@@ -1,0 +1,135 @@
+﻿@import "tailwindcss";
+@import "./styles/tokens.css";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/manrope";
+
+@theme {
+  --color-surface-0: var(--surface-0);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-glass: var(--border-glass);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-highlight: var(--accent-highlight);
+  --color-severity-success: var(--success);
+  --color-severity-warn: var(--warn);
+  --color-severity-critical: var(--critical);
+  --color-severity-info: var(--info);
+  --color-link: var(--link);
+
+  --radius-card: 12px;
+  --radius-nested: 8px;
+  --radius-pill: 999px;
+
+  --font-sans: "Inter Variable", Inter, system-ui, sans-serif;
+  --font-display: "Manrope Variable", Manrope, system-ui, sans-serif;
+
+  /* Legacy tokens mapped onto the theme so old sections stay legible in both modes */
+  --color-abyss: #0f1b2d;
+  --color-panel: var(--surface-1);
+  --color-surface: var(--surface-2);
+  --color-line: var(--border-subtle);
+  --color-cyan: var(--accent);
+  --color-brand: var(--accent);
+  --color-teal: var(--success);
+  --color-ok: var(--success);
+  --color-warn: var(--warn);
+  --color-bad: var(--critical);
+  --color-mute: var(--text-secondary);
+  --color-ink: var(--text-primary);
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-sans);
+}
+
+body {
+  margin: 0;
+  background: var(--surface-0);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Tabular numerals utility */
+.nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Focus ring accessibility */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Glassmorphism chrome */
+.glass-chrome {
+  background: rgba(16, 24, 39, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+}
+
+html[data-theme="light"] .glass-chrome {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* Rationed glass chrome for AuthCard + top status-pill row (light by default). */
+.glass-auth {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+html[data-theme="dark"] .glass-auth {
+  background: rgba(16, 24, 39, 0.6);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+/* Solid fallback when backdrop-filter is unsupported. */
+@supports not (backdrop-filter: blur(1px)) {
+  .glass-auth {
+    background: #FFFFFF;
+    border-color: rgba(15, 23, 42, 0.08);
+  }
+  html[data-theme="dark"] .glass-auth {
+    background: #101827;
+  }
+}
+
+/* Legacy utilities */
+.glass {
+  background: var(--surface-1);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-2) 25%, var(--surface-3) 50%, var(--surface-2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .skeleton {
+    animation: none;
+  }
+}

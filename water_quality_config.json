@@ -1,0 +1,18 @@
+{
+    "temperature_C": {
+        "min": 25.0,
+        "max": 32.0
+    },
+    "pH": {
+        "min": 6.5,
+        "max": 8.5
+    },
+    "DO_mgL": {
+        "min": 5.0,
+        "max": null
+    },
+    "turbidity_NTU": {
+        "min": null,
+        "max": 15.0
+    }
+}
